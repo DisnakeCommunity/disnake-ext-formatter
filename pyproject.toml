@@ -1,12 +1,13 @@
 [tool.poetry]
 name = "disnake-ext-formatter"
-version = "0.1.0a"
+version = "0.1.0a1"
 description = "A simple string.Formatter for disnake types"
 authors = ["onerandomusername <genericusername414@gmail.com>"]
 license = "MIT"
 packages = [
     { include = "disnake/ext/formatter/**/*.py" },
 ]
+readme = 'README.md'
 
 [tool.poetry.dependencies]
 python = "^3.8"
