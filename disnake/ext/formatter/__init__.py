@@ -53,18 +53,17 @@ class DisnakeFormatter(string.Formatter):
 
         if "." not in qualname:
             return True
-        childname = qualname.split(".", 1)[1]
-        module = get_top_module(obj)
-        if module and module == "disnake":
-            attr = getattr(obj, childname)
-            module = get_top_module(attr)
-            if module != "disnake" and type(attr) not in (set, int, float, str):
-                raise TypeError(f"cannot use attribute {qualname} on {parent}")
+        children = qualname.split(".")[1:]
+        for childname in children:
+            module = get_top_module(obj)
+            if module and module == "disnake":
+                attr = getattr(obj, childname)
+                if childname.startswith("_"):
+                    raise TypeError(f"cannot access private attribute {qualname} on {parent}")
+                module = get_top_module(attr)
+                if module != "disnake" and type(attr) not in (set, int, float, str):
+                    raise TypeError(f"cannot use attribute {qualname} on {parent}")
 
-            # if we need to keep going
-            if "." in childname:
-                child_attr = getattr(obj, childname.split(".", 1)[0])
-                self._validate_allowed_attribute(childname, child_attr, parent=parent)
         return True
 
     def get_field(self, field_name: str, args: Sequence[Any], kwargs: Mapping[str, Any]) -> Any:
