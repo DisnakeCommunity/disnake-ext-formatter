@@ -3,6 +3,8 @@ from typing import Any, Literal, Mapping, Sequence, Set, Type
 
 from disnake.utils import MISSING
 
+import disnake
+
 __all__ = ("DisnakeFormatter",)
 
 
@@ -21,7 +23,92 @@ class DisnakeFormatter(string.Formatter):
         *,
         suppress_blocked_errors: bool = False,
     ):
-        if allowed_mapping is MISSING or allowed_mapping is None:
+        if allowed_mapping is MISSING:
+            self.allowed_mapping = {
+                disnake.abc.GuildChannel: {
+                    "category",
+                    "created_at",
+                    "guild",
+                    "id",
+                    "jump_url",
+                    "mention",
+                    "name",
+                    "type",
+                },
+                disnake.Guild: {
+                    "approximate_member_count",
+                    "approximate_presence_count",
+                    "created_at",
+                    "description",
+                    "id",
+                    "name",
+                    "owner_id",
+                    "preferred_locale",
+                    "premium_progress_bar_enabled",
+                    "premium_subscription_count",
+                    "premium_tier",
+                    "rules_channel",
+                    "vanity_url_code",
+                },
+                disnake.Invite: {
+                    "approximate_member_count",
+                    "approximate_presence_count",
+                    "channel",
+                    "code",
+                    "created_at",
+                    "expires_at",
+                    "guild",
+                    "inviter",
+                    "max_uses",
+                    "target_type",
+                    "target_user",
+                    "uses",
+                },
+                disnake.Member: {
+                    "bot",
+                    "created_at",
+                    "discriminator",
+                    "display_name",
+                    "guild",
+                    "id",
+                    "joined_at",
+                    "mention",
+                    "name",
+                    "nick",
+                    "pending",
+                    "premium_since",
+                    "system",
+                },
+                disnake.Message: {
+                    "author",
+                    "channel",
+                    "content",
+                    "created_at",
+                    "guild",
+                    "id",
+                },
+                disnake.User: {
+                    "bot",
+                    "created_at",
+                    "discriminator",
+                    "id",
+                    "mention",
+                    "name",
+                    "system",
+                },
+                disnake.Role: {
+                    "created_at",
+                    "guild",
+                    "hoist",
+                    "id",
+                    "managed",
+                    "mention",
+                    "mentionable",
+                    "name",
+                    "position",
+                },
+            }
+        elif allowed_mapping is None:
             self.allowed_mapping = {}
         else:
             self.allowed_mapping = allowed_mapping
