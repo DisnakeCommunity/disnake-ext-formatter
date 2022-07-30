@@ -51,6 +51,27 @@ async def on_member_join(member: disnake.Member):
 
 Instead of exposing the token, this will helpfully raise an error mentioning the attribute cannot be accessed on `member`.
 
+#### Suppressing Errors
+
+If desired, `BlockedAttributeError` errors can be suppressed without exposing the attribute. This can be done with the `suppress_blocked_errors` parameter to `DisnakeFormatter`.
+When enabled, rather than raising an error the formatter will not replace that specific attribute.
+
+```python
+from disnake.ext.formatter import DisnakeFormatter
+
+USER_PROVIDED_STRING = "Welcome to {guild.name}, {member!s}! Also this bot's token is {member._state.http.token}!"
+
+
+@client.event
+async def on_member_join(member: disnake.Member):
+    # process getting the guild and other config
+    formatter = DisnakeFormatter(suppress_blocked_errors=True)
+    result = formatter.format(USER_PROVIDED_STRING, member=member)
+    await member.send(result)
+    # this sent the following message:
+    # Welcome to disnake, Charlie#0000! Also this bot's token is {member._state.http.token}!
+```
+
 ----
 
 <br>
