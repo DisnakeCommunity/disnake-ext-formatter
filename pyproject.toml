@@ -15,6 +15,14 @@ disnake = "^2.0"
 [tool.poetry.dev-dependencies]
 pre-commit = "^2.18.1"
 taskipy = "^1.10.1"
+flake8 = "~=4.0.1"
+flake8-bandit= "~=3.0.0"
+flake8-bugbear = "22.7.1"
+flake8-comprehensions = "~=3.10.0"
+flake8-noqa = "~=1.2.5"
+flake8-pytest-style = "~=1.6.0"
+
+
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

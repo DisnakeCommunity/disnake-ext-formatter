@@ -1,9 +1,7 @@
 import string
-from typing import Any, Iterable, Literal, Mapping, Sequence, Set, Tuple, Type, Union
+from typing import Any, Literal, Mapping, Sequence, Set, Type
 
 from disnake.utils import MISSING
-
-import disnake
 
 __all__ = ("DisnakeFormatter",)
 
@@ -56,7 +54,6 @@ class DisnakeFormatter(string.Formatter):
         if "." not in qualname:
             return True
         childname = qualname.split(".", 1)[1]
-        single_child_name = qualname.split(".")[1]
         module = get_top_module(obj)
         if module and module == "disnake":
             attr = getattr(obj, childname)
