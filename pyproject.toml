@@ -7,7 +7,28 @@ license = "MIT"
 packages = [
     { include = "disnake/ext/formatter/**/*.py" },
 ]
-readme = 'README.md'
+readme = "README.md"
+repository = "https://github.com/DisnakeCommunity/disnake-ext-formatter"
+documentation = "https://github.com/DisnakeCommunity/disnake-ext-formatter#readme"
+keywords = [
+    "disnake",
+    "disnake.ext",
+    "discord",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Topic :: Internet",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+]
+
+[tool.poetry.urls]
+"Disnake Community" = "https://github.com/DisnakeCommunity"
 
 [tool.poetry.dependencies]
 python = "^3.8"
