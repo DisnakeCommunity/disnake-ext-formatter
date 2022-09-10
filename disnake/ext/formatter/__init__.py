@@ -22,6 +22,7 @@ class DisnakeFormatter(string.Formatter):
         allowed_mapping: Mapping[Type, Set[str]] = MISSING,
         *,
         suppress_blocked_errors: bool = False,
+        suppress_nonexistent_key_errors: bool = False,
     ):
         if allowed_mapping is MISSING:
             self.allowed_mapping = {
@@ -112,7 +113,8 @@ class DisnakeFormatter(string.Formatter):
             self.allowed_mapping = {}
         else:
             self.allowed_mapping = allowed_mapping
-        self.suppress_blocked_errors = suppress_blocked_errors
+        self.suppress_nonexistent_key_errors: bool = suppress_nonexistent_key_errors
+        self.suppress_blocked_errors: bool = suppress_blocked_errors
 
     def vformat(self, format_string: str, args: Sequence[Any], kwargs: Mapping[str, Any]) -> str:
         if args:
@@ -169,9 +171,17 @@ class DisnakeFormatter(string.Formatter):
         return True
 
     def get_field(self, field_name: str, args: Sequence[Any], kwargs: Mapping[str, Any]) -> Any:
-        obj, used_key = super().get_field(field_name, args, kwargs)
-        attr = field_name[len(used_key) :].lstrip(".")
+        try:
+            obj, used_key = super().get_field(field_name, args, kwargs)
 
+        except (AttributeError, KeyError):
+            if not self.suppress_nonexistent_key_errors:
+                raise
+
+            # return the unformatted field_name as a placeholder--essentially a silent error
+            return "{" + field_name + "}", ""
+        else:
+            attr = field_name[len(used_key) :].lstrip(".")
         try:
             if attr and not attr.isspace():
                 if not self.allowed_mapping:
@@ -185,7 +195,7 @@ class DisnakeFormatter(string.Formatter):
             if not self.suppress_blocked_errors:
                 raise
 
-            # otherwise return the objects so we silently error
+            # return the unformatted field_name as a placeholder--essentially a silent error
             return "{" + field_name + "}", ""
 
         return obj, used_key
